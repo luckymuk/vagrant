@@ -1,0 +1,1 @@
+kubeadm join 10.128.10.134:6443 --token pgncml.mp17m39s4v38d4hx     --discovery-token-ca-cert-hash sha256:321c35edf9a0287f3e03d0c87c90bffa3cd05a57cc48bfc354f84175da82d264 
