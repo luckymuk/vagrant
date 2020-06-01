@@ -1,3 +1,5 @@
+IMAGE_NAME = "bento/ubuntu-16.04"
+N = 1
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -11,16 +13,33 @@ Vagrant.configure("2") do |config|
   # https://docs.vagrantup.com.
   config.vm.provision "shell", inline: "echo Hello"
 
-  config.vm.define "control" do |subconfig|
-    subconfig.vm.box = "bento/ubuntu-16.04"
-   # config.vm.network "vmnet2", ip: "10.10.60.31"
-    config.vm.network "public_network", bridge: "vmnet3"
-#    subconfig.vm.network "public_network"
+  config.vm.define "k8s-master" do |master|
+    master.vm.box = IMAGE_NAME
+    master.vm.hostname = "master"
+    master.vm.network "public_network", bridge: "en0: Wi-Fi (Wireless)"
+    master.vm.network "public_network", ip: "10.128.10.134", bridge: "vmnet3"
+    master.vm.network "public_network", ip: "10.128.20.134", bridge: "vmnet4"
+    master.vm.provision "ansible" do |ansible|
+	ansible.playbook = "kubernetes-setup/master-playbook-silvia.yml"
+        ansible.extra_vars = {
+           node_ip: "10.128.10.134",
+        }
+      end
   end
-  config.vm.define "node1" do |subconfig|
-    subconfig.vm.box = "bento/ubuntu-16.04"
-    config.vm.network "public_network", bridge: "vmnet3"
-    #config.vm.network "private_network", ip: "10.10.60.32"
+  (1..N).each do |i|
+  config.vm.define "node-#{i}" do |node|
+    node.vm.box = "bento/ubuntu-16.04"
+    node.vm.hostname = "node-#{i}"
+    node.vm.network "public_network", bridge: "en0: Wi-Fi (Wireless)"
+    node.vm.network "public_network", ip: "10.128.10.#{i+134}", bridge: "vmnet3"
+    node.vm.network "public_network", ip: "10.128.20.#{i+134}", bridge: "vmnet4"
+    node.vm.provision "ansible" do |ansible|
+	ansible.playbook = "kubernetes-setup/node-playbook.yml"
+	ansible.extra_vars = {
+                    node_ip: "10.128.10#{i + 134}",
+                }
+            end
+        end
   end
 #  config.vm.define "node3" do |subconfig|
 #    subconfig.vm.box = "centos/7"
@@ -55,7 +74,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-   config.vm.network "public_network"
+  # config.vm.network "public_network"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
