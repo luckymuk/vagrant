@@ -1,1 +1,1 @@
-kubeadm join 10.128.10.134:6443 --token ujtnor.8t308j3z20boxy18     --discovery-token-ca-cert-hash sha256:71b8e534bb93b262030fe2e0a5d8105bc73408911900efc2222aa15352d4532e 
+kubeadm join 10.128.10.134:6443 --token dfa3rb.sh37bihay2svrag5     --discovery-token-ca-cert-hash sha256:17fe1f288f054fac05274e6bce07ef2cfa7ebd9e1456aa80da5efee1c676d782 

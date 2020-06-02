@@ -3,7 +3,6 @@
   become: true
   vars_files:
       - vars_file
-  # sudo: yes
   tasks:
   - name: Add new user with admin privileges 
     user:
@@ -12,13 +11,12 @@
       state: present
       group: users
       shell: /bin/bash
-    when: create_user
+    when: false
   - name: Make user root
     shell: |
       usermod -aG sudo sdfadmin
       sed -i -e "s?#PasswordAuthentication yes?PasswordAuthentication yes?g" /etc/ssh/sshd_config
-  #  when: create_user
-#      service sshd restart
+    when: false
   - name: Force apt-get to use IPV4
     shell: |
       echo 'Acquire::ForceIPV4 "true";' | sudo tee /etc/apt/apt.conf.d/99force-ipv4
@@ -108,15 +106,9 @@
       name: kubelet
       daemon_reload: yes
       state: restarted
-  - listen_ports_facts:
-
-  - debug:
-      #msg: "{{ tcp_listen }}"
-      msg: '6443 not in {{ tcp_listen }}'
 
   - name: Initialize the Kubernetes cluster using kubeadm
     command: kubeadm init --apiserver-advertise-address="{{ apiserver_address }}" --apiserver-cert-extra-sans="{{ apiserver_address }}"  --node-name k8s-master --pod-network-cidr=10.10.100.0/16
-    when: '6443 not in {{ tcp_listen }}'
   - name: Create Kubeconfig directory
     file: 
       path: /home/vagrant/.kube
@@ -174,7 +166,6 @@
 
   - name: Copy join command to local file
     become: false
-   # local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/private/tmp/join-command"
     local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
   
   handlers:
