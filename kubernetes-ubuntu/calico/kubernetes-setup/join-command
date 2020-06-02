@@ -1,1 +1,1 @@
-kubeadm join 10.128.10.134:6443 --token ckqi76.h40bxuxzf9vvqltf     --discovery-token-ca-cert-hash sha256:ef830fc9f7e8d46be25d93229bcc5d2610d5f9c3821ebcf90c6e645a846d6100 
+kubeadm join 10.128.10.134:6443 --token ujtnor.8t308j3z20boxy18     --discovery-token-ca-cert-hash sha256:71b8e534bb93b262030fe2e0a5d8105bc73408911900efc2222aa15352d4532e 
