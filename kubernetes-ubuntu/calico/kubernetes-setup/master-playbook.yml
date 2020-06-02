@@ -11,12 +11,12 @@
       state: present
       group: users
       shell: /bin/bash
-    when: "{{ create_user }}"
+    when: create_user
   - name: Make user root
     shell: |
       usermod -aG sudo sdfadmin
       sed -i -e "s?#PasswordAuthentication yes?PasswordAuthentication yes?g" /etc/ssh/sshd_config
-    when: "{{ create_user }}"
+    when: create_user
   - name: Force apt-get to use IPV4
     shell: |
       echo 'Acquire::ForceIPV4 "true";' | sudo tee /etc/apt/apt.conf.d/99force-ipv4
@@ -109,8 +109,9 @@
 
   - name: Initialize the Kubernetes cluster using kubeadm
     command: kubeadm init --apiserver-advertise-address="{{ apiserver_address }}" --apiserver-cert-extra-sans="{{ apiserver_address }}"  --node-name k8s-master --pod-network-cidr=10.10.100.0/16
+
   - name: Create Kubeconfig directory
-    file: 
+    file:
       path: /home/vagrant/.kube
       state: directory
   - name: Setup kubeconfig for vagrant user
@@ -136,16 +137,16 @@
       curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.10.1/calicoctl
       chmod +x calicoctl
   - name: Create calico config directory
-    file: 
+    file:
       path: /etc/calico
       state: directory
 
   - name: Copy calicoctl config
-    copy: 
+    copy:
       src: calicoctl.cfg
       dest: /etc/calico
   - name: Copy calico config
-    copy: 
+    copy:
       src: "{{ item }}"
       dest: /tmp
     with_items:
