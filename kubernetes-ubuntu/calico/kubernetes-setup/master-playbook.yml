@@ -11,12 +11,12 @@
       state: present
       group: users
       shell: /bin/bash
-    when: false
+    when: "{{ create_user }}"
   - name: Make user root
     shell: |
       usermod -aG sudo sdfadmin
       sed -i -e "s?#PasswordAuthentication yes?PasswordAuthentication yes?g" /etc/ssh/sshd_config
-    when: false
+    when: "{{ create_user }}"
   - name: Force apt-get to use IPV4
     shell: |
       echo 'Acquire::ForceIPV4 "true";' | sudo tee /etc/apt/apt.conf.d/99force-ipv4
