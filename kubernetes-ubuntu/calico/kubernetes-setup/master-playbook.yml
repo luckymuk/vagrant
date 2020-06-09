@@ -143,16 +143,16 @@
 
   - name: Copy calicoctl config
     copy:
-      src: calicoctl.cfg
+      src: config/calicoctl.cfg
       dest: /etc/calico
   - name: Copy calico config
     copy:
       src: "{{ item }}"
       dest: /tmp
     with_items:
-       - calico.cfg
-       - bgp.cfg
-       - bgp-peer.cfg
+       - config/calico.cfg
+       - config/bgp.cfg
+       - config/bgp-peer.cfg
   - name: Installing calico
     shell: |
       calicoctl delete ippool default-ipv4-ippool
