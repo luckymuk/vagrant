@@ -1,0 +1,134 @@
+# roles/add-libraries/tasks/main.yml
+---
+- hosts: all
+  become: true
+  vars_files:
+      - vars_file
+  tasks:
+  - name: Add EPEL repo to yum
+    yum:
+      name: epel-release
+  # - name: Install Ansible 
+  #   yum:
+  #     name: ansible-2.9
+  #     state: present
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: Check ansible version
+  #   command: ansible --version
+  #   register: ansible_version
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: Check ansible version
+  #   debug:
+  #     msg: "Ansible Version: {{ ansible_version }}"
+  #   when: ansible_version.major == 2 and ansible_version.minor < 5
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: Install git from yum
+  #   yum:
+  #     name: git
+  #   when: ansible_version.major == 2 and ansible_version.minor < 5
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: remove ansible directory
+  #   file:
+  #     state: absent
+  #     path: ansible/
+  #   when: ansible_version.major == 2 and ansible_version.minor < 5
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: Install ansible 2.5 from source - 1
+  #   command: git clone https://github.com/ansible/ansible.git /tmp/ansible
+  #   when: ansible_version.major == 2 and ansible_version.minor < 5
+
+  # # install ansible 2.5 for latest bigip modules
+  # - name: Install ansible 2.5 from source - 2
+  #   make:
+  #     chdir: /tmp/ansible
+  #     target: install
+  #   become: yes
+  #   when: ansible_version.major == 2 and ansible_version.minor < 5
+
+  - name: Install pip from yum/EPEL
+    yum:
+      name: python-pip
+
+  # check pip verison and install latest if needed
+  - name: Check pip version
+    shell: pip show pip | grep Version | cut -d ' ' -f 2
+    ignore_errors: true
+    register: pip_version
+
+  # display pip version
+  - name: write out pip version if less than what is needed
+    debug:
+      msg: "PIP Version: {{ pip_version.stdout }}"
+    when: pip_version.stdout < '9.0.1'
+
+  - name: Install pip from yum/EPEL
+    yum:
+      name: python-pip
+    when: pip_version.stdout < '9.0.1'
+
+  - name: Upgrade pip
+    command: pip install --upgrade pip
+    when: pip_version.stdout < '9.0.1'
+
+  - name: Install Ansible
+    command: pip install 'ansible==2.9.7'
+  #  when: pip_version.stdout < '9.0.1'
+
+  - name: Upgrade python setuptools from pip
+    command: pip install --upgrade setuptools --user python
+
+  - name: install gsutil from pip
+    command: pip install --upgrade gsutil
+
+  - name: Install F5 SDK from pip
+    pip:
+      name: f5-sdk
+
+  - name: Install bigsuds from pip
+    pip:
+      name: bigsuds
+
+  - name: Install netaddr from pip
+    pip:
+      name: netaddr
+
+  - name: Install deepdiff from pip
+    pip:
+      name: deepdiff
+
+  - name: Install packaging from pip
+    pip:
+      name: packaging
+
+  - name: Install dnspython from pip
+    pip:
+      name: dnspython
+
+  - name: install gcc
+    yum:
+      name: gcc
+
+  - name: install libffi-devel
+    yum:
+      name: libffi-devel
+
+  - name: install python-devel
+    yum:
+      name: python-devel
+
+  - name: install openssl-devel
+    yum:
+      name: openssl-devel
+
+  - name: install python-wheel
+    yum:
+      name: python-wheel
+
+  - name: install pip install ansible[azure]
+    pip:
+      name: ansible[azure]

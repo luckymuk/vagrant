@@ -1,0 +1,7 @@
+---
+apiserver_address: "10.128.10.134"
+create_user: true
+user_name: "sdfadmin"
+# Password is created with:
+# python -c 'import crypt; print crypt.crypt("This is my Password", "$1$SomeSalt$")'
+password: "$1$SomeSalt$5tXS3zZ2eTqb92FtdPCzW0"

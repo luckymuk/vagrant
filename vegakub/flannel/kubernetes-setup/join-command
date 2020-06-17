@@ -1,0 +1,1 @@
+kubeadm join 10.128.10.134:6443 --token p2ns0g.nq4ob2kbtej4wh3o     --discovery-token-ca-cert-hash sha256:e260d1a6436dd0af5e33f4cb4f504eec1155d51cd2516da8b82c400f5bb368a8 

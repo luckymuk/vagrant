@@ -1,0 +1,56 @@
+---
+- hosts: all
+  become: true
+  environment:
+    F5_USER: root
+    F5_PASSWORD: "sdfadmin"
+    F5_VALIDATE_CERTS: "no" 
+    F5_SERVER: "10.128.1.145"
+    F5_VALIDATE_CERTS: "no"
+  vars_files:
+      - vars_file
+  tasks:
+#   - name: configure top level configuration and save it
+#     bigip_imish_config:
+#       lines: bfd slow-timer 2000
+#       save_when: modified
+#       provider:
+#         user: root
+#         password: sdfadmin
+#         server: cis.lucky.com
+#     delegate_to: localhost
+
+#   - name: diff the running-config against a provided config
+#     bigip_imish_config:
+#       diff_against: intended
+#       intended_config: "{{ lookup('file', 'master.cfg') }}"
+#       provider:
+#         user: root
+#         password: sdfadmin
+#         server: cis.lucky.com
+#     delegate_to: localhost
+
+  - name: Add config to a parent block
+    bigip_imish_config:
+      lines:
+        - neighbor calico-k8s peer-group
+        - neighbor calico-k8s remote-as 64512
+        - neighbor 10.10.60.254 peer-group calico-k8s
+        - neighbor 10.10.60.4 peer-group calico-k8s
+        - neighbor 10.10.60.14 peer-group calico-k8s
+        - neighbor 10.10.60.193 peer-group calico-k8s
+      parents: router bgp 64512
+      match: exact
+#      provider:
+#        user: root
+ #       password: sdfadmin
+  #      server: cis.lucky.com
+  #  delegate_to: localhost
+  - name: Save the running configuration of the BIG-IP
+    bigip_config:
+      save: yes
+  #    provider:
+  #      server: cis.lucky.com
+   #     password: sdfadmin
+    #    user: root
+    #delegate_to: localhost

@@ -1,25 +1,7 @@
 ---
 - hosts: all
   become: true
-  vars_files:
-      - vars_file
   tasks:
-  - name: Add new user with admin privileges 
-    user:
-      name: "{{ user_name }}"
-      password: "{{ password }}"
-      state: present
-      group: users
-      shell: /bin/bash
-    when: create_user
-  - name: Make user root
-    shell: |
-      usermod -aG sudo sdfadmin
-      sed -i -e "s?#PasswordAuthentication yes?PasswordAuthentication yes?g" /etc/ssh/sshd_config
-    when: create_user
-  - name: Force apt-get to use IPV4
-    shell: |
-      echo 'Acquire::ForceIPV4 "true";' | sudo tee /etc/apt/apt.conf.d/99force-ipv4
   - name: Install packages that allow apt to be used over HTTPS
     apt:
       name: "{{ packages }}"
@@ -30,7 +12,6 @@
       - apt-transport-https
       - ca-certificates
       - curl
-      - python3
       - gnupg-agent
       - software-properties-common
 
@@ -108,69 +89,28 @@
       state: restarted
 
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: kubeadm init --apiserver-advertise-address="{{ apiserver_address }}" --apiserver-cert-extra-sans="{{ apiserver_address }}"  --node-name k8s-master --pod-network-cidr=10.10.100.0/16
+    command: kubeadm init --apiserver-advertise-address="10.128.10.134" --apiserver-cert-extra-sans="10.128.10.134"  --node-name k8s-master --pod-network-cidr=10.10.100.0/16
 
-  - name: Create Kubeconfig directory
-    file:
-      path: /home/vagrant/.kube
-      state: directory
   - name: Setup kubeconfig for vagrant user
     command: "{{ item }}"
     with_items:
      - mkdir -p /home/vagrant/.kube
      - cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
      - chown vagrant:vagrant /home/vagrant/.kube/config
-  - name: Download Calico config
-    get_url: 
-      url: https://docs.projectcalico.org/v3.10/manifests/calico.yaml
-      dest: /usr/local/bin/calico.yaml
-  - name: Install Network POD Calico into Kube
-    shell: |
-      sed -i -e "s?192.168.0.0/16?172.16.0.0/16?g" /usr/local/bin/calico.yaml
-  - name: apply Install Network POD Calico into Kube
-    become: false
-    shell: |
-      kubectl apply -f /usr/local/bin/calico.yaml
-  - name: Installing calico 
-    shell: |
-      cd /usr/local/bin/
-      curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.10.1/calicoctl
-      chmod +x calicoctl
-  - name: Create calico config directory
-    file:
-      path: /etc/calico
-      state: directory
 
-  - name: Copy calicoctl config
-    copy:
-      src: config/calicoctl.cfg
-      dest: /etc/calico
-  - name: Copy calico config
-    copy:
-      src: "{{ item }}"
-      dest: /usr/local/bin
-    with_items:
-       - config/calico.cfg
-       - config/bgp.cfg
-       - config/bgp-peer.cfg
-  - name: Installing calico
-    shell: |
-      calicoctl delete ippool default-ipv4-ippool
-      calicoctl create -f /usr/local/bin/calico.cfg
-  - name: Setting up BGP on Calico
-    shell: |
-      calicoctl create -f /usr/local/bin/bgp.cfg
-      calicoctl create -f /usr/local/bin/bgp-peer.cfg
+ # - name: Install calico pod network
+ #   become: false
+ #   command: kubectl create -f https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+
   - name: Generate join command
     command: kubeadm token create --print-join-command
     register: join_command
 
   - name: Copy join command to local file
     become: false
+   # local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="/private/tmp/join-command"
     local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
   
   handlers:
   - name: docker status
     service: name=docker state=started
-  - name: sshd restart
-    service: name=sshd state=restart

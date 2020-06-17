@@ -12,21 +12,7 @@ Vagrant.configure("2") do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
   config.vm.provision "shell", inline: "echo Hello"
-  config.vm.define "tools" do |tools|
-    tools.vm.box = "centos/7"
-    tools.vm.hostname = "tools"
-    tools.vm.network "public_network", bridge: "en0: Wi-Fi (Wireless)"
-    tools.vm.network "public_network", ip: "10.128.1.100", bridge: "vmnet2"
-    tools.vm.network "public_network", ip: "10.128.10.100", bridge: "vmnet3"
-    tools.vm.network "public_network", ip: "10.128.20.100", bridge: "vmnet4"
-#    tools.vm.provision "ansible" do |ansible|
-#        ansible.playbook = "kubernetes-setup/tools-playbook.yml"
-#        ansible.extra_vars = {
-#           node_ip: "10.128.10.134",
-#        }
-#      end
-    tools.vm.provision "shell", inline:$script
-  end
+
   config.vm.define "k8s-master" do |master|
     master.vm.box = IMAGE_NAME
     master.vm.hostname = "master"
@@ -119,44 +105,4 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
-
-$script = <<SCRIPT
-date > /etc/vagrant_provisioned_at
-echo ""
-echo "yum update"
-echo ""
-sudo yum -y update
-echo ""
-echo "Adding epel to yum"
-echo ""
-sudo yum -y install epel-release
-echo ""
-echo "Installing ansible"
-echo ""
-sudo yum -y install ansible
-echo ""
-echo "Install the required libraries for Azure F5 HA deploy and mgmt config:"
-echo ""
-CMD="ansible-playbook /home/vagrant/playbooks/Azure/f5.yml --tags add-libraries -c local --extra-vars host=localhost -i playbooks/Azure/inventory --ask-vault-pass"
-echo $CMD
-echo ""
-#${CMD}
-echo ""
-echo "Deploy an Azure Highly available F5 pair:"
-echo ""
-CMD="ansible-playbook /home/vagrant/playbooks/Azure/f5.yml --tags f5-az-deploy-ha -c local --extra-vars host=localhost -i playbooks/Azure/inventory --ask-vault-pass"
-echo $CMD
-echo ""
-#${CMD}
-echo ""
-echo "Configure F5 mgmt:"
-echo ""
-CMD="ansible-playbook /home/vagrant/playbooks/Azure/f5.yml --tags f5-mgmt-config -c local --extra-vars host=localhost -i playbooks/Azure/inventory --ask-vault-pass"
-echo $CMD
-echo ""
-#${CMD}
-echo ""
-echo "done"
-echo ""
-SCRIPT
 end
