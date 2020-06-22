@@ -1,0 +1,10 @@
+---
+- name: Set the hostname
+  bigip_hostname:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    hostname: "{{ hostname }}"
+    validate_certs: "no"
+  delegate_to: localhost
+...

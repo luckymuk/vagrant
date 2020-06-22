@@ -1,0 +1,19 @@
+---
+# top level f5 playbook - run in the following order:
+
+# 1. Install the required libraries for aws and azure F5 HA deployments and configuration:
+# ansible-playbook /home/vagrant/playbooks/aws/f5.yml --tags add-libraries -c local --extra-vars "host=localhost env=dev"
+
+
+##### Testing Script ####
+# ansible-playbook /home/vagrant/playbooks/aws/f5.yml --tags f5-aws-testing -c local --extra-vars "host=localhost env=dev/prod" --ask-vault-pass
+
+- hosts: "{{ host }}"
+
+  roles:
+    - {role: 'add-libraries', tags: 'add-libraries', become: yes}
+    - {role: 'f5-aws-info', tags: 'f5-aws-info'}
+    - {role: 'f5-destroy-env', tags: 'f5-destroy-env', become: yes}
+
+  vars_files:
+    - "inventory/group_vars/{{ env }}.yml"

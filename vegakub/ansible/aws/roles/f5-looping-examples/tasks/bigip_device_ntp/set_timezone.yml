@@ -1,0 +1,10 @@
+---
+- name: Set timezone
+  bigip_device_ntp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    timezone: "{{ timezone }}"
+    validate_certs: "no"
+  delegate_to: localhost
+...

@@ -1,0 +1,16 @@
+---
+- name: Set the DNS settings
+  bigip_device_dns:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    name_servers:
+        - "{{ name_server1 }}"
+        - "{{ name_server2 }}"
+    search:
+        - "{{ search_domain1 }}"
+        - "{{ search_domain2 }}"
+    ip_version: "4"
+    validate_certs: "no"
+  delegate_to: localhost
+...

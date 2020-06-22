@@ -1,0 +1,13 @@
+---
+- name: Set NTP servers
+  bigip_device_ntp:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    ntp_servers:
+        - "{{ ntp_server1 }}"
+        - "{{ ntp_server2 }}"
+        - "{{ ntp_server3 }}"
+    validate_certs: "no"
+  delegate_to: localhost
+...

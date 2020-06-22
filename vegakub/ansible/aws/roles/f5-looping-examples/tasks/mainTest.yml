@@ -1,0 +1,53 @@
+- name: Collect BIG-IP facts
+  bigip_facts:
+    server: "{{inventory_hostname}}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    include: self_ip
+    #,vlan,device
+    validate_certs: "no"
+  delegate_to: localhost
+
+#- name: print all the vlans
+#  debug:
+#      msg: "{{ item.key }} == {{ item.value.vlan_id }}"
+#  with_dict: "{{ vlan }}"
+
+- name: register all the self_ip's
+#  set_fact: external_self_ip="{{item['value']['address'] }}"
+#  when: item['value']['address'] == '10.0.0.103'
+  debug:
+      msg: "{{ item.key }} == {{ item.value.address }}"
+  with_dict: "{{ self_ip }}"
+
+#- name: determine primary F5
+#  set_fact: primary_lb="{{item['value']['management_address'] }}"
+#  when: item['value']['failover_state'] == 'HA_STATE_ACTIVE'
+#  debug:
+#      msg: "{{ item.key }} == {{ item.value.management_address }}"
+#      msg: "{{ item.key }} == {{ item.value.failover_state }}"
+#  with_dict: "{{ device }}"
+
+#- name: print primary lb
+#  debug:
+#      msg: "Primary LB  == {{ primary_lb }} and SelfIP External is {{ external_self_ip }}"
+#- name: Check for a external SelfIP
+#  set_fact: external_selfip="{{item['value']['address'] }}"
+  #include_tasks: bigip_selfip/looper.yml
+#  when: item['value']['address'] == '10.0.0.103' and (item['key'] == '/Common/external_selfip')
+#  with_dict: "{{ self_ip }}"
+
+#- name: Check for a internal SelfIP
+#  set_fact: internal_selfip="{{item['value']['address'] }}"
+  #include_tasks: bigip_selfip/looper.yml
+#  when: item['value']['address'] == '192.168.0.66' and (item['key'] == '/Common/internal_selfip')
+#  with_dict: "{{ self_ip }}"
+
+#- name: print primary lb
+#  debug:
+#      msg: "External IP  == {{ external_selfip }} and Internal Self IP is {{ internal_selfip }}"
+
+- name: Print SelfIP names
+  debug:
+    msg: "SelfIP name == {{ item.key }} and IP address is {{ item.value.address }}"
+  with_dict: "{{ self_ip }}"

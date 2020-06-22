@@ -1,0 +1,11 @@
+---
+- name: Disable the initial setup screen
+  bigip_sys_global:
+    gui_setup: "{{ gui_setup }}"
+    validate_certs: no
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+  delegate_to: localhost
+
+...

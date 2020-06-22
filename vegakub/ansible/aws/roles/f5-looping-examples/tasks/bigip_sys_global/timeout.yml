@@ -1,0 +1,12 @@
+---
+- name: Disable the initial setup screen
+  bigip_sys_global:
+    console_timeout: "{{ console_timeout }}"
+    validate_certs: no
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    state: "present"
+  delegate_to: localhost
+
+...

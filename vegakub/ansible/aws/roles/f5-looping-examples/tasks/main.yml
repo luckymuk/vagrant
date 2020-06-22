@@ -1,0 +1,47 @@
+# - debug: msg="{{ hostvars[inventory_hostname]['ansible_distribution'] }}"
+# - debug: var=ansible_all_ipv4_addresses
+# - debug: var=ansible_default_ipv4.address
+# - debug: var=ansible_external
+
+- include_tasks: bigip_sys_global/disable_gui_setup.yml
+
+- include_tasks: bigip_sys_global/timeout.yml
+
+- include_tasks: bigip_license/license.yml
+
+- include_tasks: bigip_hostname/set_hostname.yml
+
+- include_tasks: bigip_device_ntp/set_ntp_server.yml
+
+- include_tasks: bigip_device_ntp/set_timezone.yml
+
+- include_tasks: bigip_device_dns/set_dns.yml
+
+- include_tasks: bigip_vlan/add_untagged_vlan.yml
+  vars:
+    - name: "{{ item.name }}"
+    - untagged_interface: "{{ item.interface }}"
+  with_items: "{{ f5_vlans }}"
+
+- include_tasks: bigip_selfip/add_selfip.yml
+  vars:
+    - name: "{{ item.name }}"
+    - address: "{{ item.address }}"
+    - netmask: "{{ item.netmask }}"
+    - vlan_name: "{{ item.vlan_name }}"
+  with_items: "{{ f5_selfips }}"
+
+- include_tasks: bigip_static_route/add_route.yml
+  vars:
+    - name: "{{ item.name }}"
+    - gateway_address: "{{ item.gateway }}"
+    - destination: "{{ item.destination }}"
+  with_items: "{{ routes }}"
+
+- include_tasks: bigip_provision/provision_module.yml
+  vars:
+    - module: "{{ item.name }}"
+    - level: "{{ item.level }}"
+  with_items: "{{ modules }}"
+
+#    - include: bigip_ssl_certificate/import_certificate.yml

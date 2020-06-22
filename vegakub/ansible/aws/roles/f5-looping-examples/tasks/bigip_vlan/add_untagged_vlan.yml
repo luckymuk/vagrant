@@ -1,0 +1,12 @@
+---
+- name: Add untagged VLAN to interface "{{ untagged_interface }}"
+  bigip_vlan:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    name: "{{ name }}"
+    untagged_interface: "{{ untagged_interface }}"
+    state: "present"
+    validate_certs: "no"
+  delegate_to: localhost
+...

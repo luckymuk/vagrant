@@ -1,0 +1,73 @@
+# Vagrantfile to provision a tools vm.
+
+##########################################################################
+# Notes:
+# 
+#
+##########################################################################
+# Variables
+#   $playbooks_path = (one of the below) 
+#       Windows = "\\GitHub\\vegakub"
+#       OSX     = "~/Documents/GitHub/vagrant/vegakub"
+#   $extra_path = (one of the below) for files you want to use but dont want in GitHub Repo
+#       Windows = "\\GitHub\\NotInGit\WebScale"
+#       OSX     = "~/Documents/GitHub/NotInGit/vegakub"
+$playbooks_path = "~/Documents/GitHub/vagrant/vegakub"
+$extra_path = "~/Documents/GitHub/NotInGitHub/vegakub"
+
+##########################################################################
+# define provisioning bash script
+$script = <<SCRIPT
+date > /etc/vagrant_provisioned_at
+echo "Install the required libraries for aws"
+echo ""
+echo "Installing ansible"
+echo ""
+sudo apt-get install ansible -y
+echo ""
+CMD="ansible-playbook /home/vagrant/playbooks/ansible/aws/f5.yml --tags add-libraries -c local --extra-vars host=localhost --extra-vars env=dev"
+echo $CMD
+echo ""
+${CMD}
+echo "done"
+echo ""
+SCRIPT
+
+##########################################################################
+# Vagrant Virtual Machine definition
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+# Box metadata location and box name
+BOX_NAME = "hashicorp/bionic64"
+
+# define hostname
+NAME = "WebScale-Tools-VM"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = BOX_NAME
+  config.vm.define NAME
+  config.vm.box_version = "1.0.282"
+  config.ssh.insert_key = false
+
+
+  # change memory size
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.name = NAME
+  end
+  config.vm.provider :libvirt do |v|
+    v.memory = 2048
+  end
+
+  # run bash script on vm
+  config.vm.provision "shell", inline: $script
+    
+  # To speed up the VM Build I want to disable guest additionas plugin as it is not needed at this time.
+  if Vagrant.has_plugin?("vagrant-vbguest")
+      config.vbguest.auto_update = false
+  end
+      
+  config.vm.synced_folder $playbooks_path, "/home/vagrant/playbooks", type: "sshfs"
+  config.vm.synced_folder $extra_path, "/home/vagrant/extra", type: "sshfs"
+end

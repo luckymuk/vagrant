@@ -1,0 +1,10 @@
+---
+- include_tasks: add_selfip.yml
+  vars:
+    - name: "{{ line_item.name }}"
+    - address: "{{ line_item.address }}"
+    - netmask: "{{ line_item.netmask }}"
+    - vlan_name: "{{ line_item.vlan_name }}"
+  with_items: "{{ f5_selfips }}"
+  loop_control:
+    loop_var: line_item

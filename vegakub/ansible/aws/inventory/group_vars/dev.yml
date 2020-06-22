@@ -1,0 +1,8 @@
+# Define everything related to the Dev deployment
+
+# SSH
+# This is the name of the SSH private key object in AWS
+sshKey: "Denis-KeyPair"
+
+# This is the path to your local SSH private key located on your computer
+sshKeyPath: "/home/vagrant/extra/{{ sshKey }}.pem"

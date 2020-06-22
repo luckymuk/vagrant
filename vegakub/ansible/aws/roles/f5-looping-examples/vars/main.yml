@@ -1,0 +1,38 @@
+# roles/f5-mgmt-config/vars/main.yml
+
+gui_setup: "disabled"
+console_timeout: "7200"
+key: "AUJDO-DIRZK-LMEUK-GAZDC-VQSZBNW"
+hostname: "bigip.wee-it.com"
+name_server1: "192.168.0.50"
+name_server2: "8.8.8.8"
+search_domain1: "wee-it.com"
+search_domain2: "localhost"
+ntp_server1: "0.ca.pool.ntp.org"
+ntp_server2: "1.ca.pool.ntp.org"
+ntp_server3: "2.ca.pool.ntp.org"
+timezone: "Canada/Saskatchewan"
+internal_name: "internal"
+internal_interface: "1.1"
+external_name: "external"
+external_interface: "1.2"
+route_domain: "0"
+traffic_group: "traffic-group-local-only"
+f5_vlans:
+  - { name: internal, interface: 1.1 }
+  - { name: external, interface: 1.2 }
+f5_selfips:
+  - name: internal_selfip
+    address: 192.168.0.66
+    netmask: 255.255.255.0
+    vlan_name: internal
+  - name: external_selfip
+    address: 10.0.0.103
+    netmask: 255.255.255.0
+    vlan_name: external
+routes:
+  - { name: default_gateway, gateway: 10.0.0.1, destination: 0.0.0.0/0 }
+  - { name: internal_gateway, gateway: 192.168.0.1, destination: 192.168.0.0/16 }
+modules:
+  - {name: asm, level: nominal}
+  - {name: apm, level: nominal}

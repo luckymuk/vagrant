@@ -1,0 +1,67 @@
+---
+  - name: Install packages via apt
+    apt:
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+      - git
+      - gcc
+      - gcc
+      - libssl-dev
+      - python-wheel
+      - wget
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+    
+  # check pip version and install latest if needed
+  - name: Check pip version
+    shell: pip3 show pip | grep Version | tail -n1 | cut -d ' ' -f 2
+    ignore_errors: true
+    register: pip_version
+
+  # display pip version
+  - name: write out pip version if less than what is needed
+    debug:
+      msg: "PIP Version: {{ pip_version.stdout }}"
+    when: pip_version.stdout < '20.1'
+
+  - name: Install pip
+    apt:
+      name: python3-pip
+    when: pip_version.stdout < '20.1'
+
+  - name: Upgrade pip
+    command: pip3 install --upgrade pip
+    when: pip_version.stdout < '20.1'
+
+  - name: Upgrade python3 setuptools from pip
+    command: pip3 install --upgrade setuptools 
+
+  - name: Install packages via pip
+    pip:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - python-dev-tools
+      - f5-sdk
+      - bigsuds
+      - netaddr
+      - deepdiff
+      - packaging
+      - dnspython
+      - ansible[azure]
+      - awscli
+      - boto3
+      - botocore
+      
+#Create repo Directory for any Git work to use
+  - name: Create repo directory
+    file:
+      path: /repo
+      state: directory      

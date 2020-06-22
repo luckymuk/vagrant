@@ -1,0 +1,12 @@
+
+---
+- name: Add static route
+  bigip_static_route:
+    destination: "{{ destination }}"
+    gateway_address: "{{ gateway_address }}"
+    name: "{{ name }}"
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    validate_certs: no
+  delegate_to: localhost

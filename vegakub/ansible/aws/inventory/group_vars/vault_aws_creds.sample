@@ -1,0 +1,9 @@
+---
+# Store this in either the groupvars folder ( and change the paths in the playbooks if yo are using shared creds, or in each environment folder.
+
+AWS Access Key ID [None]: 
+AWS Secret Access Key [None]:
+Default region name [None]: 
+Default output format [None]:
+
+# See here for how to create - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html

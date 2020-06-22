@@ -1,0 +1,13 @@
+
+  - name: Include our vault that holds our environment specific AWS and F5 credentials
+    include_vars: ../../inventory/{{ env }}//vault_aws_creds.yml
+
+  # - name: Include our environment specific AWS variables
+  #   include_vars: ../vars/{{ env }}.yml
+
+  - name: Find all F5 instances associated with the f5_master_list
+    include_tasks: ../../common/find-f5-instances.yml
+
+  - name: f5_working_list
+    debug:
+      var: f5_working_list

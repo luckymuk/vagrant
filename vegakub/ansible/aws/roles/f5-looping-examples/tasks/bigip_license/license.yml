@@ -1,0 +1,10 @@
+---
+- name: License BIG-IP using default license options
+  bigip_license:
+    server: "{{ inventory_hostname }}"
+    user: "{{ f5_user }}"
+    password: "{{ f5_pass }}"
+    key: "{{ key }}"
+    validate_certs: "no"
+  delegate_to: localhost
+...
