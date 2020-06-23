@@ -1,6 +1,16 @@
 ---
+  - name: Facts
+    setup:
+   
+  - name: Dump
+    delegate_to: localhost
+    run_once: true
+    debug:
+      msg: Ansible Distribution ../vars/{{ ansible_distribution }}.yml
+  - include: "{{ ansible_distribution }}.yml" 
+  
   - name: Install packages via apt
-    apt:
+    yum:
       name: "{{ packages }}"
       state: present
       update_cache: yes
@@ -8,15 +18,7 @@
       packages:
       - git
       - gcc
-      - gcc
-      - libssl-dev
-      - python-wheel
-      - wget
-      - apt-transport-https
       - ca-certificates
-      - curl
-      - gnupg-agent
-      - software-properties-common
     
   # check pip version and install latest if needed
   - name: Check pip version
@@ -31,23 +33,22 @@
     when: pip_version.stdout < '20.1'
 
   - name: Install pip
-    apt:
+    pip:
       name: python3-pip
-    when: pip_version.stdout < '20.1'
+    when: pip_version.stdout == ""
 
   - name: Upgrade pip
     command: pip3 install --upgrade pip
     when: pip_version.stdout < '20.1'
 
-  - name: Upgrade python3 setuptools from pip
-    command: pip3 install --upgrade setuptools 
-
   - name: Install packages via pip
     pip:
-      name: "{{ packages }}"
+      name: "{{ package }}"
       state: present
+      extra_args: --user
     vars:
-      packages:
+      package:
+      - wheel
       - python-dev-tools
       - f5-sdk
       - bigsuds
@@ -59,9 +60,11 @@
       - awscli
       - boto3
       - botocore
-      
+      - curl
+      - wget
+ 
 #Create repo Directory for any Git work to use
   - name: Create repo directory
     file:
       path: /repo
-      state: directory      
+      state: directory 
