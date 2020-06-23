@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo "Good morning, WebScale user.  Lets Do this !!!"
+echo "Good morning, Vega user.  Lets Do this !!!"
 
 mkdir -p -- ~/playbooks
 mkdir -p -- ~/extra
@@ -9,7 +9,7 @@ echo "Install the required libraries for UDF"
 echo ""
 echo "Updating machine"
 echo ""
-sudo dnf upgrade -y
+sudo dnf -y upgrade
 echo ""
 echo "Installing python3"
 echo ""

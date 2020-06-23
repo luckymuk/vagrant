@@ -6,4 +6,4 @@
       update_cache: yes
     vars:
       packages:
-      - openssl-dev
+      - openssl-devel

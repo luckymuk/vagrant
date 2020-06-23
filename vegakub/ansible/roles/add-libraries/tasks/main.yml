@@ -9,7 +9,7 @@
       msg: Ansible Distribution ../vars/{{ ansible_distribution }}.yml
   - include: "{{ ansible_distribution }}.yml" 
   
-  - name: Install packages via apt
+  - name: Install packages via yum
     yum:
       name: "{{ packages }}"
       state: present
