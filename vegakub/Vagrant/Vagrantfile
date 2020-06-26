@@ -25,7 +25,7 @@ echo "Installing ansible"
 echo ""
 sudo apt-get install ansible -y
 echo ""
-CMD="ansible-playbook /home/vagrant/playbooks/ansible/aws/f5.yml --tags add-libraries -c local --extra-vars host=localhost --extra-vars env=dev"
+CMD="ansible-playbook /home/vagrant/playbooks/ansible/f5.yml --tags add-libraries -c local --extra-vars host=localhost --extra-vars env=dev"
 echo $CMD
 echo ""
 ${CMD}

@@ -6,20 +6,9 @@
     delegate_to: localhost
     run_once: true
     debug:
-      msg: Ansible Distribution ../vars/{{ ansible_distribution }}.yml
+      msg: Ansible Distribution {{ ansible_distribution }}.yml
   - include: "{{ ansible_distribution }}.yml" 
   
-  - name: Install packages via yum
-    yum:
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-      - git
-      - gcc
-      - ca-certificates
-    
   # check pip version and install latest if needed
   - name: Check pip version
     shell: pip3 show pip | grep Version | tail -n1 | cut -d ' ' -f 2
@@ -32,14 +21,16 @@
       msg: "PIP Version: {{ pip_version.stdout }}"
     when: pip_version.stdout < '20.1'
 
-  - name: Install pip
-    pip:
-      name: python3-pip
-    when: pip_version.stdout == ""
-
   - name: Upgrade pip
     command: pip3 install --upgrade pip
-    when: pip_version.stdout < '20.1'
+    when: 
+      - pip_version.stdout < '20.1' 
+      - pip_version.stdout != ""
+
+  - name: Install pip
+    apt:
+      name: python3-pip
+    when: pip_version.stdout == ""
 
   - name: Install packages via pip
     pip:
