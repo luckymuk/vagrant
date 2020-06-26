@@ -1,0 +1,23 @@
+sudo yum update -y
+reboot
+
+sudo dnf install -y libvirt qemu-kvm mkisofs python3-devel jq ipmitool tmux tar bind-utils dnsmasq virt-install nginx telnet
+reboot
+
+sudo systemctl enable libvirtd
+sudo systemctl start libvirtd
+
+
+
+NGINX instructions:
+
+
+
+Kubernetes manifest instructions
+sudo su
+/usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
+vi /usr/share/nginx/html/installations/manifests/cluster-scheduler-02-config.yml
+cp install-config.yaml install-config-bak.yaml
+/usr/share/nginx/html/installations/openshift-install create manifests --dir=/usr/share/nginx/html/installations/
+vi /usr/share/nginx/html/installations/manifests/cluster-scheduler-02-config.yml
+    Set the mastersSchedulable to False
