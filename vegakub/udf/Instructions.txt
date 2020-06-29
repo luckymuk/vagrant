@@ -1,22 +1,15 @@
-My attempt:
-	1. Boot a new CentoS 8
-	2. SSH into it
-    3. run the commands in the bastion.sh file
-	
-This is the part that's broken:   
-Need to add this ssh key into vm - not working not sure how to get it to work.    
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLK8LTLF0ILRMVwGwSSmDZRGSypWVLwbfIB66H0HOwvdubCY/0PqoAiJn/r/XeZ1Nve84IFZJ2EHTjwKdhEIJ2rT+7/cqirBr03EwM0H7fZG5lnqnGwqW1/nuNWva8vjjyTXDoOzW8KT0qrjhfbVoaQ71SUYIDXgqp0NCZXAYyoVF5aOuEM1zAfX3G8gu+iEL32xuOFiAyFE7E1h1GdpL3rvwV8yb4Ox+o/3yHgcQse1ou7dYNIpy+OTh4Lj7pl+AKPSzJ0EB94M5gMhyI5nVyUXIvWR9MKDr2H8uiWXpiH/Asc2FgkCzLijXlLU0dr95+TEZaFZNVdUkt/KE9gmfN access-method-key
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDPoNmTrR2yijX/GAFkFS6iCfZCZQpEk87fmEt8rgJ+cvSQiYgr4vN4qqPoXDJIQt9wKn00qI2RPHZLenNiT53GrXmN/kAZ1wmgarGWbM2k01pYvfQUqXioCT2RPtNIwvUfjcK3ib1dvJNHlT/3bzSmwFFf2ncPWPMeNgab++6fDOktjVq1szC6147hrB2RscyJryG8pKGY0tNcxCMfhy5CxcfEkv7GzNX7W+0+a7rCuhcQR0FiQfgcewNiyDN67vEm4H0Pv2huvKpyDEqOeq59KjC4+CTisZlL8lI9r91E2ZhI4lV9VOTcLHO2EmBfwSjhAshe/S+fAbqLuOAK8svWuX5z7QGjvBmImoKjFSwU8nUWy0FLw0XXlvfaTd8TYco2bpbFc3dyASvvLI1X+gl2yRbnbhTTcVG1k9LQhjrQcu+PHQoHaQQJGU6VpT+hOslumCUNPR+0HkUA1PvsJgxwUKwMl955mHZ2NFNWO6UcaTA6wlTVMPi/rGZkxa2Y6FYCkERehpmjBxTOKhnR/8lfWy8tLqvUKQFns/nD24krifyPLVEnOtw9ZD6JvorI7B+YaoVV/HtPoECINtZtQTR/nG48EdpooRL5d0aA/nKxW7ZVh1KsL4inArPzFPA/4hKTUeaXEVGQbOxVtS9YPHNZzrgRaq780MdsHZlO9VQmwQ== centos@d3294401-7f5a-46f2-9d34-de148a9edbca
-    
-    
-    On Eric's BootStrap:
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLK8LTLF0ILRMVwGwSSmDZRGSypWVLwbfIB66H0HOwvdubCY/0PqoAiJn/r/XeZ1Nve84IFZJ2EHTjwKdhEIJ2rT+7/cqirBr03EwM0H7fZG5lnqnGwqW1/nuNWva8vjjyTXDoOzW8KT0qrjhfbVoaQ71SUYIDXgqp0NCZXAYyoVF5aOuEM1zAfX3G8gu+iEL32xuOFiAyFE7E1h1GdpL3rvwV8yb4Ox+o/3yHgcQse1ou7dYNIpy+OTh4Lj7pl+AKPSzJ0EB94M5gMhyI5nVyUXIvWR9MKDr2H8uiWXpiH/Asc2FgkCzLijXlLU0dr95+TEZaFZNVdUkt/KE9gmfN access-method-key
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCp68mTXYs36vD4rrsAMhy/NCenYdMLjWxbLy1T8U9Cu3vEEvhPIpgKPDE2KGzKh2yGMXurRfCToW376mSicdxBgt7wJPQD8TZ6UZsGaQqei3J/rinw09qxzrtt4zTFz9lHj0eMM4D+Kr0cuzo8yPRJoyThJF0eC6ixoDIUgOFqYJiotLL8t5YJYZ/j66l5rrv/qSjXVxsRgjanbOfgnRUPC4b9D7GghZUKqSS8fptx+e2whRBj6BYFtIf3B2XLsQbMauvS1l2KmCtA78Q6FHUN9HujQgzKE1Gt9oKpur0pNqSo6aGKmEPUm5mVjibbrSJ0bR1L0QSq+oe2O2DYyF+3 centos@ip-10-1-1-4
-    
-I added it to the coreOs but didnt re-do the ign and other files.
+1. Create a new CentoS 8 UDF VM - Call it - HTTP
+2. Create 5 more nodes - Worker, Bastion, etc.
 
-curl -s -L -I http://10.1.1.4/installations/rhcos-4.4.3-x86_64-metal.x86_64.raw.gz
-curl -s -L -I http://10.1.1.4:/installations/bootstrap.ign
+3. On the Web Node 
+    a. SSH into it via UDF
+    b. run the commands in the WebNode.sh file
+
+2. Once you have completed the Web Node run the Master.sh setup file
+    
+
+
+
 
 Links:
 GitLab build
