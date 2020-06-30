@@ -1,0 +1,22 @@
+#DNS for bastion node and bootstrap node
+10.1.10.100  api-int.openshift.aspenlab api.openshift.aspenlab
+10.1.10.150  aspen-node-1.openshift.aspenlab aspen-node-1 provisioner-web.openshift.aspenlab provisioner-web
+10.1.10.200  bootstrap.openshift.aspenlab bootstrap bootstrap
+
+
+#DNS for master nodes
+10.1.10.201  master-1.openshift.aspenlab master-1
+10.1.10.202  master-2.openshift.aspenlab master-2
+10.1.10.203  master-3.openshift.aspenlab master-3
+
+#ETCd cluster lives on the masters
+10.1.10.201  etcd-0.openshift.aspenlab etcd-0
+10.1.10.202  etcd-1.openshift.aspenlab etcd-1
+10.1.10.203  etcd-2.openshift.aspenlab etcd-2
+
+#DNS for worker nodes
+10.1.10.204  aspen-node-2.openshift.aspenlab aspen-node-2
+10.1.10.205  aspen-node-3.openshift.aspenlab aspen-node-3
+10.1.10.206  aspen-node-4.openshift.aspenlab aspen-node-4
+10.1.10.207  aspen-node-5.openshift.aspenlab aspen-node-5
+10.1.10.208  aspen-node-6.openshift.aspenlab aspen-node-6
