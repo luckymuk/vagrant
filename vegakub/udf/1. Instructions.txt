@@ -1,0 +1,37 @@
+1. Deploy a new UDF Blueprint with:
+    a. CentOS 8 VM's with - 2 CPU - 8 Gig RAM 30 Gig Disk - Make sure it is 10.1.1.4 and call it WEB
+    b. QTY 3 - CentOS 8 VM's with - 4 CPU - 16 Gig RAM 50 Gig Disk
+        One called Master, one called worker, and one called bootstrap
+2. On the Web Node 
+    a. SSH into it via UDF
+    b. run the commands in the WebNode.sh file
+
+3. Once you have completed the Web Node, on the Bootstrap Node
+    a. SSH into it via UDF
+    b. run the commands in the BootstrapNode.sh file
+    
+4. Once you have completed the Bootstrap Node, on the Master and Worker Nodes
+    a. SSH into it via UDF
+    b. run the commands in the respective .sh files
+
+
+Links:
+GitLab build
+https://gitlab.com/f5-vwells/vega-f5-only/-/blob/master/sp-lab/OpenShift_Lab_Build_Instructions/procedures/7-Create_the_custom_ISO_images.md
+
+
+Eric's Lab 1
+https://f5.sharepoint.com/sites/salesandmktg/sales/syseng/SitePages/OpenShift-4.3-using-libvirt-and-kvm.aspx
+https://github.com/f5devcentral/f5-k8s-demo/blob/ocp4/ocp4/docs/build/index.rst
+
+
+
+Redhat - Opeshift on BareMetal
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/installing_on_bare_metal/installing-on-bare-metal
+Downloads
+https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/
+
+
+Check to see if file sizes are correct:  
+    curl -L -I http://10.1.1.4/installations/rhcos-4.4.3-x86_64-installer-kernel-x86_64
+    curl -L -I http://10.1.1.4/installations/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img

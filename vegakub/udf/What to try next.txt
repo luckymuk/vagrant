@@ -1,1 +1,0 @@
-change the ssh key to drop the username at the end of it.
