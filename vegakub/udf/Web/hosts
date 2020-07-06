@@ -1,5 +1,5 @@
 #DNS for bastion node and bootstrap node
-10.1.10.100  api-int.openshift.aspenlab api.openshift.aspenlab
+10.1.10.150  api-int.openshift.aspenlab api.openshift.aspenlab
 10.1.10.150  aspen-node-1.openshift.aspenlab aspen-node-1 provisioner-web.openshift.aspenlab provisioner-web
 10.1.10.200  bootstrap.openshift.aspenlab bootstrap bootstrap
 

@@ -11,3 +11,4 @@ Watch the console to see if it worked
 add core user to UDF to each of the VM's you did the above provedure to.
 
 ssh into it once it is up as core user.
+journalctl -af

@@ -3,6 +3,22 @@ Assuming this is a CentOs 8 UDF VM - the following applies
 Update the VM
 sudo yum update -y
 sudo reboot
+
+sudo vi /etc/sysconfig/network-scripts/ifcfg-eth1
+# Created by cloud-init on instance boot automatically, do not edit.
+#
+BOOTPROTO=static
+DEVICE=eth0
+HWADDR=52:54:00:3c:a4:da
+ONBOOT=yes
+TYPE=Ethernet
+IPADDR0=10.1.10.150
+IPADDR1=10.1.10.100
+PREFIX0=24
+GATEWAY0=10.1.10.1
+USERCTL=no
+
+
 sudo dnf install -y python3-devel jq ipmitool tmux tar bind-utils dnsmasq nginx telnet wget
 vi /etc/selinux/config
     change the line to:
@@ -76,7 +92,7 @@ Create the Credentials to Log in to the OpenShift Cluster
         export KUBECONFIG=/usr/share/nginx/html/installations/auth/kubeconfig
         PATH=$PATH:/usr/share/nginx/html/installations
         
-        ip a add 10.1.10.100/24 dev eth1
+        
 
 
     
