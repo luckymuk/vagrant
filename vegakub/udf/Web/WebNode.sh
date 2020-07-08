@@ -8,31 +8,34 @@ sudo vi /etc/sysconfig/network-scripts/ifcfg-eth1
 # Created by cloud-init on instance boot automatically, do not edit.
 #
 BOOTPROTO=static
-DEVICE=eth0
+DEVICE=eth1
 HWADDR=52:54:00:3c:a4:da
 ONBOOT=yes
 TYPE=Ethernet
 IPADDR0=10.1.10.150
-IPADDR1=10.1.10.100
+# IPADDR1=10.1.10.100
 PREFIX0=24
 GATEWAY0=10.1.10.1
 USERCTL=no
 
 
 sudo dnf install -y python3-devel jq ipmitool tmux tar bind-utils dnsmasq nginx telnet wget
-vi /etc/selinux/config
+sudo vi /etc/selinux/config
     change the line to:
     SELINUX=disabled
 sudo reboot
 
-systemctl enable chronyd.service
-systemctl restart chronyd.service
+sudo systemctl enable chronyd.service
+sudo systemctl restart chronyd.service
 
 sudo vi /etc/hosts
 copy in the hosts file contents - dG to delete all in vi
 
 sudo vi /etc/resolv.conf
 copy inthe resolv.conf file contents
+
+sudo systemctl enable dnsmasq
+sudo systemctl restart dnsmasq
 
 Make a directory for NGINX and get your secrets file.
 sudo mkdir /usr/share/nginx/html/installations
@@ -80,6 +83,8 @@ Creating the Kubernetes manifest and Ignition config files
     sudo /usr/share/nginx/html/installations/openshift-install create ignition-configs --dir=/usr/share/nginx/html/installations/
     sudo chmod o+r /usr/share/nginx/html/installations/*
     
+*** Go to the BootStrap Install Now ***
+
 Provision the required load balancers
     sudo vi /etc/nginx/nginx.conf
     sudo nginx -s reload
@@ -91,6 +96,16 @@ Create the Credentials to Log in to the OpenShift Cluster
         add these 2 lines to the file
         export KUBECONFIG=/usr/share/nginx/html/installations/auth/kubeconfig
         PATH=$PATH:/usr/share/nginx/html/installations
+
+*** Go to the Maters Install Now ***
+
+        
+Edit the nginx config for the worker nodes:
+    ....
+    reload
+
+
+*** Go to the Worker Node Install Now ***
         
         
 
