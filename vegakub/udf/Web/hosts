@@ -15,7 +15,7 @@
 10.1.1.8  etcd-2.openshift.aspenlab etcd-2
 
 #DNS for worker nodes
-10.1.1.9  aspen-node-2.openshift.aspenlab aspen-node-2
+10.1.1.9   aspen-node-2.openshift.aspenlab aspen-node-2
 10.1.1.10  aspen-node-3.openshift.aspenlab aspen-node-3
 10.1.1.11  aspen-node-4.openshift.aspenlab aspen-node-4
 10.1.1.12  aspen-node-5.openshift.aspenlab aspen-node-5

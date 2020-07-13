@@ -89,6 +89,7 @@
         
 8.  Provision the required load balancers
     sudo vi /etc/nginx/nginx.conf
+        Replace with the master-nginx.conf file contents
     sudo nginx -s reload
     sudo systemctl status nginx
     systemctl status dnsmasq.service
@@ -102,7 +103,7 @@
 10.  *** Go to the Maters Install Now ***
 
         
-11.  Edit the nginx config for the worker nodes:
+11. Edit the nginx config for the worker nodes:
         sudo vi /etc/nginx/nginx.conf
             Replace with the worker-nginx.conf contents
         sudo nginx -s reload
@@ -111,10 +112,35 @@
         
 
 
-*** Go to the Worker Node Install Now ***
+12. *** Go to the Worker Node Install Now ***
         
-        
+13. Create the OpenShift Cluster
+    on the bootstrap server
+        Monitor the bootstrap process
+            /usr/share/nginx/html/installations/openshift-install --dir=/usr/share/nginx/html/installations wait-for bootstrap-complete --log-level=info
+        When it says
+            INFO It is now safe to remove the bootstrap resources 
+                Then you can proceed
+14. Remove the bootstrap node from the nginx and add the workers
+    sudo vi /etc/nginx/nginx.conf
+        Replace with the remove-bootstrap-nginx.conf contents
+    sudo nginx -s reload
+    sudo systemctl status nginx
+    systemctl status dnsmasq.service
 
+15. Approving the CSRs for your machines
+    On the web vm:
+        Check that you have the Masters up:
+            oc get nodes
+        Review the pending certificate CSR's
+            oc get csr
+        Approve the pending CSR's
+            oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
+        Verify all machines are now recognized
+            oc get nodes --all-namespaces
+
+16. Power off the bootstrap node.
+    
 
     
     

@@ -1,5 +1,5 @@
-sudo curl -O -L -J http://10.1.10.150:8080/installations/rhcos-4.4.3-x86_64-installer-kernel-x86_64
-sudo curl -O -L -J http://10.1.10.150:8080/installations/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img
+sudo curl -O -L -J http://10.1.1.4:8080/installations/rhcos-4.4.3-x86_64-installer-kernel-x86_64
+sudo curl -O -L -J http://10.1.1.4:8080/installations/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img
 sudo mv rhcos-4.4.3-x86_64-installer-kernel-x86_64 /boot/vmlinuz-rhcos
 sudo mv rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img /boot/initramfs-rhcos.img
 
