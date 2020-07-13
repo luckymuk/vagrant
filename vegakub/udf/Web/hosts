@@ -5,18 +5,18 @@
 
 
 #DNS for master nodes
-10.1.10.201  master-1.openshift.aspenlab master-1
-10.1.10.202  master-2.openshift.aspenlab master-2
-10.1.10.203  master-3.openshift.aspenlab master-3
+10.1.1.6  master-1.openshift.aspenlab master-1
+10.1.1.7  master-2.openshift.aspenlab master-2
+10.1.1.8  master-3.openshift.aspenlab master-3
 
 #ETCd cluster lives on the masters
-10.1.10.201  etcd-0.openshift.aspenlab etcd-0
-10.1.10.202  etcd-1.openshift.aspenlab etcd-1
-10.1.10.203  etcd-2.openshift.aspenlab etcd-2
+10.1.1.6  etcd-0.openshift.aspenlab etcd-0
+10.1.1.7  etcd-1.openshift.aspenlab etcd-1
+10.1.1.8  etcd-2.openshift.aspenlab etcd-2
 
 #DNS for worker nodes
-10.1.10.212  aspen-node-2.openshift.aspenlab aspen-node-2
-10.1.1.213  aspen-node-3.openshift.aspenlab aspen-node-3
-10.1.10.214  aspen-node-4.openshift.aspenlab aspen-node-4
-10.1.10.215  aspen-node-5.openshift.aspenlab aspen-node-5
-10.1.10.216  aspen-node-6.openshift.aspenlab aspen-node-6
+10.1.1.9  aspen-node-2.openshift.aspenlab aspen-node-2
+10.1.1.10  aspen-node-3.openshift.aspenlab aspen-node-3
+10.1.1.11  aspen-node-4.openshift.aspenlab aspen-node-4
+10.1.1.12  aspen-node-5.openshift.aspenlab aspen-node-5
+10.1.1.13  aspen-node-6.openshift.aspenlab aspen-node-6
