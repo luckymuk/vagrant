@@ -3,23 +3,23 @@
         sudo yum update -y
         sudo reboot
     
-2.  We Might need to bind this IP address - I dont hink so anymore
+2.  #We Might need to bind this IP address - I dont think so anymore
         #sudo vi /etc/sysconfig/network-scripts/ifcfg-eth1
         # Created by cloud-init on instance boot automatically, do not edit.
         #
-        BOOTPROTO=static
-        DEVICE=eth1
-        HWADDR=52:54:00:3c:a4:da
-        ONBOOT=yes
-        TYPE=Ethernet
-        IPADDR0=10.1.10.150
+        #BOOTPROTO=static
+        #DEVICE=eth1
+        #HWADDR=52:54:00:3c:a4:da
+        #ONBOOT=yes
+        #TYPE=Ethernet
+        #IPADDR0=10.1.10.150
         # IPADDR1=10.1.10.100
-        PREFIX0=24
-        GATEWAY0=10.1.10.1
-        USERCTL=no
+        #PREFIX0=24
+        #GATEWAY0=10.1.10.1
+        #USERCTL=no
 
 3.  Add some additonal Packages:
-        sudo dnf install -y python3-devel jq ipmitool tmux tar bind-utils dnsmasq nginx telnet wget
+        sudo dnf install -y python3-devel jq ipmitool tmux tar bind-utils dnsmasq nginx telnet wget tcpdump
         sudo vi /etc/selinux/config
             If needed change the line to:
                 SELINUX=disabled
@@ -99,9 +99,9 @@
             add these 2 lines to the file
                 export KUBECONFIG=/usr/share/nginx/html/installations/auth/kubeconfig
                 PATH=$PATH:/usr/share/nginx/html/installations
+        source $HOME/source.rc
 
 10.  *** Go to the Maters Install Now ***
-
         
 11. Edit the nginx config for the worker nodes:
         sudo vi /etc/nginx/nginx.conf
@@ -109,8 +109,6 @@
         sudo nginx -s reload
         sudo systemctl status nginx
         systemctl status dnsmasq.service
-        
-
 
 12. *** Go to the Worker Node Install Now ***
         
