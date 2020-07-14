@@ -102,7 +102,7 @@
                 PATH=$PATH:/usr/share/nginx/html/installations
         source $HOME/source.rc
 
-10.  *** Go to the Maters Install Now ***
+10.  *** Go to the Masters Install Now ***
         
 11. Edit the nginx config for the worker nodes:
         sudo vi /etc/nginx/nginx.conf
