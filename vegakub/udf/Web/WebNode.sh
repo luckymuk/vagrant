@@ -95,6 +95,7 @@
     systemctl status dnsmasq.service
     
 9.  Create the Credentials to Log in to the OpenShift Cluster
+        sudo su
         vi $HOME/source.rc
             add these 2 lines to the file
                 export KUBECONFIG=/usr/share/nginx/html/installations/auth/kubeconfig
@@ -138,7 +139,20 @@
             oc get nodes --all-namespaces
 
 16. Power off the bootstrap node.
+
+17. Upgrade to Openshift 4.4.5
+        Place the OpenShift Cluster in a Unmanaged or offline stat
+            oc patch --type='json' configs.samples cluster -p '[{"op": "add", "path": "/spec/managementState", "value": "Unmanaged"}]'
+        Perfrom the Upgrade
+            oc adm upgrade --to-image=quay.io/openshift-release-dev/ocp-release:4.4.5-x86_64 --allow-explicit-upgrade --force
+        Watch the upgrade - 60 minutes
+            watch "oc get clusterversion,nodes;oc get co| head -1;oc get co | grep 4.4.3; oc get co | head -1; oc get co | grep 4.4.5; oc get po -A -o wide | egrep -vi 'running|completed'" 
+        Return the OpenShift Cluster to a Managed or online state 
+            oc patch --type='json' configs.samples cluster -p '[{"op": "add", "path": "/spec/managementState", "value": "Managed"}]'
+        Check version
+            oc version
     
+        
 
     
     
