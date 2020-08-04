@@ -3,29 +3,14 @@
         sudo yum update -y
         sudo reboot
     
-2.  #We Might need to bind this IP address - I dont think so anymore
-        #sudo vi /etc/sysconfig/network-scripts/ifcfg-eth1
-        # Created by cloud-init on instance boot automatically, do not edit.
-        #
-        #BOOTPROTO=static
-        #DEVICE=eth1
-        #HWADDR=52:54:00:3c:a4:da
-        #ONBOOT=yes
-        #TYPE=Ethernet
-        #IPADDR0=10.1.10.150
-        # IPADDR1=10.1.10.100
-        #PREFIX0=24
-        #GATEWAY0=10.1.10.1
-        #USERCTL=no
-
-3.  Add some additonal Packages:
+2.  Add some additonal Packages:
         sudo dnf install -y python3-devel jq ipmitool tmux tar bind-utils dnsmasq nginx telnet wget tcpdump
         sudo vi /etc/selinux/config
             If needed change the line to:
                 SELINUX=disabled
         sudo reboot
 
-4. We are going to enable NTP and DNSMASQ
+3. We are going to enable NTP and DNSMASQ
        sudo systemctl enable chronyd.service
        sudo systemctl restart chronyd.service
 
@@ -151,9 +136,34 @@
             oc patch --type='json' configs.samples cluster -p '[{"op": "add", "path": "/spec/managementState", "value": "Managed"}]'
         Check version
             oc version
-    
+            
+18. Subscribing to the Container-native virtualization catalog
+        Follow the instructions here - https://gitlab.com/f5-vwells/vega-f5-only/-/blob/master/sp-lab/OpenShift_Lab_Build_Instructions/procedures/12-Installing_Container_Native_Virtualization.md
         
-
-    
-    
-    
+        Short Form below:
+        RDP into jumphost and add the following to the hosts file c:\windows\system32\drivers\etc\hosts
+            10.1.1.4 console-openshift-console.apps.openshift.aspenlab oauth-openshift.apps.openshift.aspenlab
+        On the web node run the following to get the consoleURL and password
+            oc edit console.config.openshift.io
+                It will return consoleURL: https://console-openshift-console.apps.openshift.aspenlab
+            cat /usr/share/nginx/html/installations/auth/kubeadmin-password
+                for me it was: 9SoMf-kYCbT-JKdbk-xN6vK
+        Open a browser on the jumphost and browse:
+            https://console-openshift-console.apps.openshift.aspenlab
+        and login with:
+            kubeadmin:9SoMf-kYCbT-JKdbk-xN6vK
+        Navigate to the Operators > OperatorHub page
+        Search for Container-native virtualization and then select it
+        Click Install
+        On the Create Operator Subscription page
+        For Installed Namespace, ensure that the Operator recommended namespace option is selected.
+        Click Subscribe
+        From the Operators > Installed Operators page make sure you are in the openshift-cnv ProjectClick Container-native virtualization
+        Click the CNV Operator Deployment tab and click Create HyperConverged Cluster
+        Ensure that the custom resource is named the default kubevirt-hyperconverged
+        Create
+        
+        On the web node run this command to check the installation status:
+            oc get pod --all-namespaces | grep cni
+            
+        
